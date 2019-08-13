@@ -1,12 +1,12 @@
-use airline_ontime ; 
+USE airline_ontime ; 
 
+IMPORT JAR /usr/hdp/current/hive-client/lib/hive-serde.jar;
+DROP TABLE IF EXISTS flights_raw PURGE;
+DROP TABLE IF EXISTS airports_raw PURGE;
+DROP TABLE IF EXISTS airlines_raw PURGE;
+DROP TABLE IF EXISTS planes_raw PURGE;
 
-drop table if exists flights_raw PURGE;
-drop table if exists airports_raw PURGE;
-drop table if exists airlines_raw PURGE;
-drop table if exists planes_raw PURGE;
-
-create table flights_raw (
+CREATE TABLE flights_raw (
   Year int,
   Month int,
   DayofMonth int,
@@ -15,44 +15,39 @@ create table flights_raw (
   CRSDepTime int,
   ArrTime int,
   CRSArrTime int,
-  UniqueCarrier varchar(5),
+  UniqueCarrier String,
   FlightNum int,
-  TailNum varchar(8),
+  TailNum String,
   ActualElapsedTime int,
   CRSElapsedTime int,
   AirTime int,
   ArrDelay int,
   DepDelay int,
-  Origin varchar(3),
-  Dest varchar(3),
+  Origin String,
+  Dest String,
   Distance int,
   TaxiIn int,
   TaxiOut int,
   Cancelled int,
-  CancellationCode varchar(1),
-  Diverted varchar(1),
+  CancellationCode String,
+  Diverted String,
   CarrierDelay int,
   WeatherDelay int,
   NASDelay int,
   SecurityDelay int,
   LateAircraftDelay int
 )
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-STORED AS TEXTFILE
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  "separatorChar" = ",",
+  "quoteChar"     = '"',
+  "escapeChar"    = "\\"
+)
+STORED AS textfile
 TBLPROPERTIES ("skip.header.line.count"="1")
-
-#ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
-#WITH SERDEPROPERTIES (
-#  "separatorChar" = ",",
-#  "quoteChar"     = '"',
-#  "escapeChar"    = "\\"
-#)  
-#stored as textfile 
-#tblproperties ("skip.header.line.count"="1")
 ;
 
-create table airports_raw (
+CREATE TABLE airports_raw (
   iata string,
   airport string,
   city string,
@@ -61,41 +56,31 @@ create table airports_raw (
   lat double,
   lon double
 )
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-STORED AS TEXTFILE
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  "separatorChar" = ",",
+  "quoteChar"     = '"',
+  "escapeChar"    = "\\"
+)
+STORED AS textfile
 TBLPROPERTIES ("skip.header.line.count"="1")
-
-#ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
-#WITH SERDEPROPERTIES (
-#  "separatorChar" = ",",
-#  "quoteChar"     = '"',
-#  "escapeChar"    = "\\"
-#)  
-#stored as textfile 
-#tblproperties ("skip.header.line.count"="1")
 ;
 
-create table airlines_raw (
+CREATE TABLE airlines_raw (
   code string,
   description string
 )
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-STORED AS TEXTFILE
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  "separatorChar" = ",",
+  "quoteChar"     = '"',
+  "escapeChar"    = "\\"
+)
+STORED AS textfile
 TBLPROPERTIES ("skip.header.line.count"="1")
-
-#ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
-#WITH SERDEPROPERTIES (
-#  "separatorChar" = ",",
-#  "quoteChar"     = '"',
-#  "escapeChar"    = "\\"
-#)  
-#stored as textfile 
-#tblproperties ("skip.header.line.count"="1")
 ;
 
-create table planes_raw (
+CREATE TABLE planes_raw (
   tailnum string,
   owner_type string,
   manufacturer string,
@@ -106,17 +91,12 @@ create table planes_raw (
   engine_type string,
   year int
 )
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-STORED AS TEXTFILE
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  "separatorChar" = ",",
+  "quoteChar"     = '"',
+  "escapeChar"    = "\\"
+ )
+STORED AS textfile
 TBLPROPERTIES ("skip.header.line.count"="1")
-
-#ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
-#WITH SERDEPROPERTIES (
-#  "separatorChar" = ",",
-#  "quoteChar"     = '"',
-#  "escapeChar"    = "\\"
-# )  
-#stored as textfile
-#tblproperties ("skip.header.line.count"="1")
 ;
