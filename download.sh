@@ -1,25 +1,6 @@
 #!/bin/bash
-set -e -x;
-
-#Default values
-export Data_DIR="./data"
-export HDFS_DIR="/tmp/airline_demo"
-
-export START="1988"
-export END="2008"
-
-export DATABASE="airline_ontime"
-export HIVE_PROTOCOL="http"  # binary | http
-export LLAP=false
-export HIVE_PORT_BINARY=10000
-export LLAP_PORT_BINARY=10500
-export HIVE_PORT_HTTP=10001
-export LLAP_PORT_HTTP=10501
-export HIVE_HOST="localhost"
-
-#overide defaults
+set -e;
 source config.sh
-
 
 ##### Setup #######
 #create data dir
@@ -35,9 +16,10 @@ touch ddl/$LOAD_DATA_FILE
 ######  Download ######	
 
 ## Flight data
+echo "downloading flight data:"
 for YEAR in $( seq $START $END )	
 do
-	wget -c http://stat-computing.org/dataexpo/2009/$YEAR.csv.bz2 -P $Data_DIR
+	wget -q -c http://stat-computing.org/dataexpo/2009/$YEAR.csv.bz2 -P $Data_DIR
 	echo "$YEAR.csv.bz2: OK"
 	sleep 1
 done
@@ -45,7 +27,7 @@ done
 echo "Flight data downloaded"
 
 ## Airport, carrier and plane data 
-wget -c \
+wget -q -c \
   http://stat-computing.org/dataexpo/2009/airports.csv \
   http://stat-computing.org/dataexpo/2009/carriers.csv \
   http://stat-computing.org/dataexpo/2009/plane-data.csv \
@@ -60,8 +42,8 @@ echo "Carrier, airport, plane-data Dowloaded"
 
 
 ####### Prepare Hive table create and Data Load Statements #########
-sed -i "1c create database if not exists ${DATABASE};" ddl/airline_create.sql
-sed -i "2c use ${DATABASE};" ddl/airline_create.sql
+sed -i "1c CREATE DATABASE IF NOT EXISTS ${DATABASE};" ddl/airline_create.sql
+sed -i "2c USE ${DATABASE};" ddl/airline_create.sql
 
  
 echo "LOAD DATA INPATH '$HDFS_DIR/data/carriers.csv' INTO TABLE $DATABASE.airlines_raw;" >> ddl/$LOAD_DATA_FILE
