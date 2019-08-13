@@ -1,6 +1,6 @@
 USE airline_ontime ; 
 
-IMPORT JAR /usr/hdp/current/hive-client/lib/hive-serde.jar;
+ADD JAR /usr/hdp/current/hive-client/lib/hive-serde.jar;
 DROP TABLE IF EXISTS flights_raw PURGE;
 DROP TABLE IF EXISTS airports_raw PURGE;
 DROP TABLE IF EXISTS airlines_raw PURGE;
