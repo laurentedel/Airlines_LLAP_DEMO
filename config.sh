@@ -9,17 +9,17 @@ export START="1988"
 export END="2008"
 
 ### Data directories
-#export Data_DIR="./data" 
-#export HDFS_DIR="/tmp/airline_demo"
+export Data_DIR="./data" 
+export HDFS_DIR="/tmp/airline_demo"
 
 ## Hive connection Configurations
-#export HIVE_HOST="localhost"
-#export DATABASE="airline_ontime"
-#export HIVE_PROTOCOL="http"  # binary | http
-#export LLAP=false #wether or not to use LLAP
+export HIVE_HOST="localhost"
+export DATABASE="airline_ontime"
+export HIVE_PROTOCOL="http"  # binary | http
+export LLAP=false #wether or not to use LLAP
 
 ## defaults ports
-#export HIVE_PORT_BINARY=10000
-#export LLAP_PORT_BINARY=10500
-#export HIVE_PORT_HTTP=10001
-#export LLAP_PORT_HTTP=10501
+export HIVE_PORT_BINARY=10000
+export LLAP_PORT_BINARY=10500
+export HIVE_PORT_HTTP=10001
+export LLAP_PORT_HTTP=10501
